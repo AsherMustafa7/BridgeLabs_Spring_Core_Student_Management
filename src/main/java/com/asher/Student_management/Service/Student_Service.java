@@ -2,6 +2,8 @@ package com.asher.Student_management.Service;
 
 import org.springframework.stereotype.Service;
 import com.asher.Student_management.Repository.Student_Repository;
+import com.asher.Student_management.DTO.StudentRequestDTO;
+import com.asher.Student_management.DTO.StudentResponseDTO;
 import com.asher.Student_management.Entity.Student;
 import java.util.List;
 import java.util.Optional;
@@ -14,9 +16,30 @@ public class Student_Service
         this.studentRepository = studentRepository;
     }
 
-    public Student addStudent(Student student) {
-        return studentRepository.save(student);
+    // public Student addStudent(Student student) {
+    //     return studentRepository.save(student);
+    // }
+    // -------------------------------------------------------------------------------
+    public StudentResponseDTO addStudent(StudentRequestDTO request) 
+    {
+
+        Student student = new Student();
+
+        student.setName(request.getName());
+        student.setDepartment(request.getDepartment());
+
+        Student savedStudent = studentRepository.save(student);
+
+        StudentResponseDTO response = new StudentResponseDTO(
+                savedStudent.getId(),
+                savedStudent.getName(),
+                savedStudent.getDepartment(),
+                "Student registered successfully"
+        );
+
+        return response;
     }
+    // -------------------------------------------------------------------------------
 
     public List<Student> getAllStudents() {
         return studentRepository.findAll();
