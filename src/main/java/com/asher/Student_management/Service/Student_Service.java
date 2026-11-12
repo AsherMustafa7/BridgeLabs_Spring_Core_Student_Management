@@ -5,6 +5,9 @@ import com.asher.Student_management.Repository.Student_Repository;
 import com.asher.Student_management.Entity.Student;
 import java.util.List;
 import java.util.Optional;
+import com.asher.Student_management.DTO.StudentRequestDTO;
+import com.asher.Student_management.DTO.StudentResponseDTO;
+
 @Service 
 public class Student_Service 
 {
@@ -13,10 +16,17 @@ public class Student_Service
     public Student_Service(Student_Repository studentRepository) {
         this.studentRepository = studentRepository;
     }
-
-    public Student addStudent(Student student) {
-        return studentRepository.save(student);
+    // ---------------------------------------------------------------
+    public StudentResponseDTO addStudent(StudentRequestDTO request) 
+    {
+        Student student = new Student();
+        student.setName(request.getName());
+        student.setDepartment(request.getDepartment());
+        Student savedStudent = studentRepository.save(student);
+        String message = "Student added successfully with ID: " + savedStudent.getId();
+        return new StudentResponseDTO(savedStudent.getId(), savedStudent.getName(), savedStudent.getDepartment(), message);
     }
+    // ---------------------------------------------------------------
 
     public List<Student> getAllStudents() {
         return studentRepository.findAll();

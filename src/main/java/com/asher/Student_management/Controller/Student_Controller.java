@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.asher.Student_management.Service.Student_Service;
+import com.asher.Student_management.DTO.StudentRequestDTO;
+import com.asher.Student_management.DTO.StudentResponseDTO;
 import com.asher.Student_management.Entity.Student;
 import org.springframework.http.ResponseEntity;
 import java.util.List;
@@ -12,7 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
-
+import jakarta.validation.Valid;
 import java.util.Optional;
 
 
@@ -41,11 +43,21 @@ public class Student_Controller
         }
     }
 
+    // @PostMapping
+    // public ResponseEntity<Student> addStudent(@RequestBody Student student) {
+    //     Student addedStudent = studentService.addStudent(student);
+    //     return ResponseEntity.ok(addedStudent);
+    // }
+    // ---------------------------------------------------------------
     @PostMapping
-    public ResponseEntity<Student> addStudent(@RequestBody Student student) {
-        Student addedStudent = studentService.addStudent(student);
-        return ResponseEntity.ok(addedStudent);
+    public ResponseEntity<StudentResponseDTO> addStudent(@Valid @RequestBody StudentRequestDTO request) 
+    {
+
+        StudentResponseDTO response =studentService.addStudent(request);
+
+        return ResponseEntity.status(201).body(response);
     }
+    // ---------------------------------------------------------------
 
     @PutMapping("/{id}")
     public ResponseEntity<Student> updateStudent(@PathVariable int id, @RequestBody  Student updatedStudent) 
